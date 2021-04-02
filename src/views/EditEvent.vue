@@ -135,6 +135,7 @@ export default {
           .post(url, data, config)
           .then(response => {
             this.response = response.data
+            this.showAddParticipantsForm = false
           })
           .catch(error => console.log(error))
     }
