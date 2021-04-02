@@ -7,9 +7,11 @@
       </li>
     </ul>
 
-    <button class="btn btn-primary" @click="showAddGroupForm">Add group</button>
+    <button class="btn btn-primary" @click="toggleShowAddGroupForm">Add group</button>
+    <br>
+    <button class="btn btn-primary" @click="toggleShowAddParticipantsForm">Add participants</button>
 
-    <form v-if="showForm" id="add-group" @submit="submit" action="https://vuejs.org/" method="post">
+    <form v-if="showAddGroupForm" id="add-group" @submit="postGroup">
 
       <div v-if="errors.length">
         <b>Please correct the following error(s):</b>
@@ -31,7 +33,28 @@
       </p>
 
       <p>
-        <input type="submit" value="Submit" @click="postGroup">
+        <input type="submit" value="Submit">
+      </p>
+
+    </form>
+
+    <form v-if="showAddParticipantsForm" id="add-participants" @submit="postParticipants">
+
+      <div v-if="errors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">* {{ error }}</li>
+        </ul>
+      </div>
+
+      <p>
+        <label>
+          <input type="file" id="file">
+        </label>
+      </p>
+
+      <p>
+        <input type="submit" value="Submit">
       </p>
 
     </form>
@@ -48,7 +71,8 @@ export default {
   data() {
     return {
       errors: [],
-      showForm: false,
+      showAddGroupForm: false,
+      showAddParticipantsForm: false,
       title: null,
       groups: [],
       maxParticipants: null,
@@ -57,6 +81,12 @@ export default {
     }
   },
   methods: {
+    toggleShowAddGroupForm() {
+      this.showAddGroupForm = !this.showAddGroupForm
+    },
+    toggleShowAddParticipantsForm() {
+      this.showAddParticipantsForm = !this.showAddParticipantsForm
+    },
     postGroup(e) {
       e.preventDefault()
 
@@ -82,7 +112,7 @@ export default {
             .post(url, data, config)
             .then(response => {
               if (response.status === 201) {
-                this.showForm = false
+                this.showAddGroupForm = false
                 this.groups.push(response.data)
               }
             })
@@ -90,13 +120,27 @@ export default {
       }
 
     },
-    showAddGroupForm() {
-      this.showForm = true
+    postParticipants(e) {
+      e.preventDefault()
+
+      const file = document.getElementById('file')
+      const data = new FormData()
+      data.append('file', file.files[0])
+      const url = 'http://localhost:8080/participants/csv'
+      const config = {
+        params: {token: this.token}
+      }
+
+      axios
+          .post(url, data, config)
+          .then(response => {
+            this.response = response.data
+          })
+          .catch(error => console.log(error))
     }
   },
   mounted() {
     this.token = this.$route.query.token
-    console.log(this.token)
     if (this.token != null) {
       const url = 'http://localhost:8080/events/groups'
       const config = {params: {token: this.token}}
