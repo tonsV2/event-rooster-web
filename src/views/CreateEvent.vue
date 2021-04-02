@@ -2,7 +2,7 @@
   <div class="create-event">
     <h1>This is a "create event" page</h1>
 
-    <form id="create-event" @submit="submit" action="https://vuejs.org/" method="post">
+    <form id="create-event" @submit="submit">
 
       <div v-if="errors.length">
         <b>Please correct the following error(s):</b>
