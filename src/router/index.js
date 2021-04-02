@@ -13,6 +13,11 @@ const routes = [
     component: () => import('../views/CreateEvent.vue')
   },
   {
+    path: '/edit-event',
+    name: 'EditEvent',
+    component: () => import('../views/EditEvent.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
