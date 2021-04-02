@@ -76,7 +76,7 @@ export default {
         const url = 'http://localhost:8080/events'
         const data = {
           title: this.title,
-          datetime: this.datetime,
+          datetime: new Date(this.datetime).toISOString(),
           email: this.email
         }
 

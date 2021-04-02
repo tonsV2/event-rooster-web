@@ -105,7 +105,7 @@ export default {
         const config = {params: {token: this.token}}
         const data = {
           maxParticipants: parseInt(this.maxParticipants),
-          datetime: this.datetime
+          datetime: new Date(this.datetime).toISOString()
         }
 
         axios
