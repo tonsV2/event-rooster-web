@@ -73,17 +73,21 @@ export default {
       }
 
       if (this.errors.length < 1) {
+        const url = 'http://localhost:8080/events'
+        const data = {
+          title: this.title,
+          datetime: this.datetime,
+          email: this.email
+        }
+
         axios
-            .post('http://localhost:8080/events', {
-              title: this.title,
-              datetime: this.datetime,
-              email: this.email
-            })
+            .post(url, data)
             .then(response => {
               this.clicked = true
               console.log(response.data)
               this.response = response.data
             })
+            // TODO: Show error message on page
             .catch(error => console.log(error.response.data.error))
       }
 
