@@ -2,14 +2,14 @@
   <div class="create-event">
     <h1>This is a "create event" page</h1>
 
-    <form id="create-event" @submit="submit">
+    <div v-if="errors.length">
+      <b>The following error(s) occurred:</b>
+      <ul>
+        <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">* {{ error }}</li>
+      </ul>
+    </div>
 
-      <div v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
-          <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">* {{ error }}</li>
-        </ul>
-      </div>
+    <form id="create-event" @submit="submit">
 
       <p>
         <label>
@@ -74,21 +74,29 @@ export default {
 
       if (this.errors.length < 1) {
         const url = 'http://localhost:8080/events'
-        const data = {
-          title: this.title,
-          datetime: new Date(this.datetime).toISOString(),
-          email: this.email
-        }
+        try {
+          const data = {
+            title: this.title,
+            datetime: new Date(this.datetime).toISOString(),
+            email: this.email
+          }
 
-        axios
-            .post(url, data)
-            .then(response => {
-              this.clicked = true
-              console.log(response.data)
-              this.response = response.data
-            })
-            // TODO: Show error message on page
-            .catch(error => console.log(error.response.data.error))
+          axios
+              .post(url, data)
+              .then(response => {
+                this.clicked = true
+                console.log(response.data)
+                this.response = response.data
+              })
+              .catch(error => {
+                console.log(error)
+                this.errors.push(error.response.data.error)
+              })
+
+        } catch (error) {
+          console.log(error)
+          this.errors.push(error)
+        }
       }
 
     }

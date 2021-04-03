@@ -2,6 +2,13 @@
   <div class="edit-event">
     <h1 v-if="event">{{ event.title }}</h1>
 
+    <div v-if="errors.length">
+      <b>The following error(s) occurred:</b>
+      <ul>
+        <li class="error" v-bind:key="index" v-for="(error, index) in errors">{{ error }}</li>
+      </ul>
+    </div>
+
     <ul v-if="event">
       <li v-bind:key="index" v-for="(group, index) in event.groups">
         <div>
@@ -34,6 +41,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      errors: [],
       event: null,
       ungroupedParticipants: null
     }
@@ -43,21 +51,29 @@ export default {
       const url = 'http://localhost:8080/events'
       const config = {params: {token: this.token}}
 
-      axios.get(url, config)
+      axios
+          .get(url, config)
           .then(response => {
             this.event = response.data
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error)
+            this.errors.push(error.response.data.error)
+          })
     },
     getUngroupedParticipants() {
       const url = 'http://localhost:8080/participants/not-in-groups'
       const config = {params: {token: this.token}}
 
-      axios.get(url, config)
+      axios
+          .get(url, config)
           .then(response => {
             this.ungroupedParticipants = response.data
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error)
+            this.errors.push(error)
+          })
     },
     getParticipantsLength(group) {
       return group.participants ? group.participants.length : 0
@@ -68,16 +84,18 @@ export default {
   },
   mounted() {
     this.token = this.$route.query.token
-    if (this.token != null) {
+    if (this.token != null && this.token !== '') {
       this.getEvent()
       this.getUngroupedParticipants()
     } else {
-      // TODO: Show error message on page
-      console.log('Missing token!')
+      this.errors.push('Missing token!')
     }
   }
 }
 </script>
 
 <style scoped>
+.error {
+  color: red
+}
 </style>

@@ -1,6 +1,14 @@
 <template>
   <div class="edit-event">
     <h1>{{ title }}</h1>
+
+    <div v-if="errors.length">
+      <b>The following error(s) occurred:</b>
+      <ul>
+        <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">* {{ error }}</li>
+      </ul>
+    </div>
+
     <ul>
       <li v-bind:key="index" v-for="(group, index) in groups">
         {{ group.maxParticipants }} - {{ group.datetime }}
@@ -12,13 +20,6 @@
     <button class="btn btn-primary" @click="toggleShowAddParticipantsForm">Add participants</button>
 
     <form v-if="showAddGroupForm" id="add-group" @submit="postGroup">
-
-      <div v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
-          <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">* {{ error }}</li>
-        </ul>
-      </div>
 
       <p>
         <label>
@@ -39,13 +40,6 @@
     </form>
 
     <form v-if="showAddParticipantsForm" id="add-participants" @submit="postParticipants">
-
-      <div v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
-          <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">* {{ error }}</li>
-        </ul>
-      </div>
 
       <p>
         <label>
@@ -103,29 +97,44 @@ export default {
       if (this.errors.length < 1) {
         const url = 'http://localhost:8080/events/groups'
         const config = {params: {token: this.token}}
-        const data = {
-          maxParticipants: parseInt(this.maxParticipants),
-          datetime: new Date(this.datetime).toISOString()
+        try {
+          const data = {
+            maxParticipants: parseInt(this.maxParticipants),
+            datetime: new Date(this.datetime).toISOString()
+          }
+
+          axios
+              .post(url, data, config)
+              .then(response => {
+                if (response.status === 201) {
+                  this.showAddGroupForm = false
+                  this.groups.push(response.data)
+                }
+              })
+              .catch(error => {
+                const e = error.response.data.error;
+                console.log(e)
+                this.errors.push(e)
+              })
+        } catch (error) {
+          console.log(error)
+          this.errors.push(error)
         }
 
-        axios
-            .post(url, data, config)
-            .then(response => {
-              if (response.status === 201) {
-                this.showAddGroupForm = false
-                this.groups.push(response.data)
-              }
-            })
-            .catch(error => console.log(error.response.data.error))
       }
 
     },
     postParticipants(e) {
       e.preventDefault()
 
-      const file = document.getElementById('file')
+      const fileElement = document.getElementById('file')
+      const file = fileElement.files[0]
+      if (file == null) {
+        this.errors.push("No input file!")
+        return
+      }
       const data = new FormData()
-      data.append('file', file.files[0])
+      data.append('file', file)
       const url = 'http://localhost:8080/participants/csv'
       const config = {
         params: {token: this.token}
@@ -136,13 +145,17 @@ export default {
           .then(response => {
             this.response = response.data
             this.showAddParticipantsForm = false
+            this.errors = []
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error)
+            this.errors.push(error)
+          })
     }
   },
   mounted() {
     this.token = this.$route.query.token
-    if (this.token != null) {
+    if (this.token != null && this.token !== '') {
       const url = 'http://localhost:8080/events/groups'
       const config = {params: {token: this.token}}
 
@@ -152,10 +165,13 @@ export default {
             this.title = data.title
             this.groups = data.groups
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            console.log(error)
+            this.errors.push(error.response.data.error)
+          })
     } else {
-      // TODO: Show error message on page
       console.log('Missing token!')
+      this.errors.push('A valid future date is required')
     }
   }
 }
