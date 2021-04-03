@@ -5,7 +5,7 @@
     <div v-if="errors.length">
       <b>The following error(s) occurred:</b>
       <ul>
-        <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">* {{ error }}</li>
+        <li class="form-error" v-bind:key="index" v-for="(error, index) in errors">{{ error }}</li>
       </ul>
     </div>
 
