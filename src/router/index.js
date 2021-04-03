@@ -23,6 +23,11 @@ const routes = [
     component: () => import('../views/ShowEvent.vue')
   },
   {
+    path: '/join-group',
+    name: 'JoinGroup',
+    component: () => import('../views/JoinGroup.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
