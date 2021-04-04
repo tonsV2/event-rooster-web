@@ -65,7 +65,7 @@ jobs:
       - name: Confirm process is running as pid 1
         run: |
           # TODO: Don't hardcode application name
-          PID=$(docker-compose exec -T prod pgrep event-rooster-api)
+          PID=$(docker-compose exec -T prod pgrep master)
           [ "$PID" == "1" ]
 
       - name: End smoke test
