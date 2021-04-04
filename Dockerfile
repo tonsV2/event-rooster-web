@@ -1,7 +1,7 @@
 FROM node:15.13.0-alpine3.13 AS builder
 WORKDIR /src
 ADD package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=true
+RUN yarn install --frozen-lockfile
 ADD . .
 RUN yarn build
 
