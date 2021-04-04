@@ -2,7 +2,7 @@ environments:
   dev:
     values:
       - kubeContext: nuc
-      - name: event-rooster
+      - name: event-rooster-web
       - hostname: event-rooster.dev.fitfit.dk
       - certIssuer: letsencrypt-staging
       - replicaCount: 1
@@ -10,7 +10,7 @@ environments:
   prod:
     values:
       - kubeContext: nuc
-      - name: event-rooster
+      - name: event-rooster-web
       - hostname: event-rooster.fitfit.dk
       - certIssuer: letsencrypt-prod
       - replicaCount: 2
@@ -18,7 +18,7 @@ environments:
   feature:
     values:
       - kubeContext: nuc
-      - name: event-rooster-{{ .Environment.Name }}-{{ requiredEnv "FEATURE_TAG" }}
+      - name: event-rooster-web{{ .Environment.Name }}-{{ requiredEnv "FEATURE_TAG" }}
       - hostname: event-rooster-{{ requiredEnv "FEATURE_TAG" }}.fitfit.dk
       - certIssuer: letsencrypt-staging
       - replicaCount: 1
