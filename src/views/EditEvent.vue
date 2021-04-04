@@ -60,6 +60,7 @@
 
 <script>
 import axios from "axios";
+import apiBaseUrl from '@/utils/api-base-url'
 
 export default {
   data() {
@@ -95,7 +96,7 @@ export default {
       }
 
       if (this.errors.length < 1) {
-        const url = 'http://localhost:8080/events/groups'
+        const url = apiBaseUrl('/events/groups')
         const config = {params: {token: this.token}}
         try {
           const data = {
@@ -135,7 +136,7 @@ export default {
       }
       const data = new FormData()
       data.append('file', file)
-      const url = 'http://localhost:8080/participants/csv'
+      const url = apiBaseUrl('/participants/csv')
       const config = {
         params: {token: this.token}
       }
@@ -156,7 +157,7 @@ export default {
   mounted() {
     this.token = this.$route.query.token
     if (this.token != null && this.token !== '') {
-      const url = 'http://localhost:8080/events/groups'
+      const url = apiBaseUrl('/events/groups')
       const config = {params: {token: this.token}}
 
       axios.get(url, config)

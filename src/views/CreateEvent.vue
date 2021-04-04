@@ -42,6 +42,7 @@
 
 <script>
 import axios from "axios";
+import apiBaseUrl from '@/utils/api-base-url'
 
 export default {
   data() {
@@ -73,7 +74,7 @@ export default {
       }
 
       if (this.errors.length < 1) {
-        const url = 'http://localhost:8080/events'
+        const url = apiBaseUrl('/events')
         try {
           const data = {
             title: this.title,

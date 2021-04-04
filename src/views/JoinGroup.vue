@@ -31,6 +31,7 @@
 
 <script>
 import axios from "axios";
+import apiBaseUrl from '@/utils/api-base-url'
 
 export default {
   data() {
@@ -56,7 +57,7 @@ export default {
     },
     submit() {
       this.errors = []
-      const url = 'http://localhost:8080/participants/groups'
+      const url = apiBaseUrl('/participants/groups')
       const config = {params: {token: this.token, groupId: this.selectedGroup.id}}
 
       axios
@@ -82,7 +83,7 @@ export default {
     }
 
     if (this.token != null && this.token !== '' && this.eventId !== '') {
-      const url = 'http://localhost:8080/events/groups-count'
+      const url = apiBaseUrl('/events/groups-count')
       const config = {params: {eventId: this.eventId, token: this.token}}
 
       axios

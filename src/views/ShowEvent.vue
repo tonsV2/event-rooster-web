@@ -37,6 +37,7 @@
 
 <script>
 import axios from "axios";
+import apiBaseUrl from '@/utils/api-base-url'
 
 export default {
   data() {
@@ -48,7 +49,7 @@ export default {
   },
   methods: {
     getEvent() {
-      const url = 'http://localhost:8080/events'
+      const url = apiBaseUrl('/events')
       const config = {params: {token: this.token}}
 
       axios
@@ -62,7 +63,7 @@ export default {
           })
     },
     getUngroupedParticipants() {
-      const url = 'http://localhost:8080/participants/not-in-groups'
+      const url = apiBaseUrl('/participants/not-in-groups')
       const config = {params: {token: this.token}}
 
       axios
