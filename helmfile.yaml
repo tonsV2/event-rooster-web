@@ -1,0 +1,39 @@
+environments:
+  dev:
+    values:
+      - kubeContext: nuc
+      - name: event-rooster
+      - host: event-rooster.dev.fitfit.dk
+      - certIssuer: letsencrypt-staging
+      - replicaCount: 1
+
+  prod:
+    values:
+      - kubeContext: nuc
+      - name: event-rooster
+      - host: event-rooster.fitfit.dk
+      - certIssuer: letsencrypt-prod
+      - replicaCount: 2
+
+  feature:
+    values:
+      - kubeContext: nuc
+      - name: event-rooster-{{ .Environment.Name }}-{{ requiredEnv "FEATURE_TAG" }}
+      - host: event-rooster-{{ requiredEnv "FEATURE_TAG" }}.fitfit.dk
+      - certIssuer: letsencrypt-staging
+      - replicaCount: 1
+
+releases:
+  - name: "{{ .Values.name }}"
+    namespace: event-rooster-{{ .Environment.Name }}
+    chart: helm/
+    kubeContext: "{{ .Values.kubeContext }}"
+    values:
+      - ingress:
+          enabled: true
+          hostname: {{ .Values.host }}
+          certIssuer: {{ .Values.certIssuer }}
+      - replicaCount: {{ .Values.replicaCount }}
+
+helmDefaults:
+  recreatePods: true
