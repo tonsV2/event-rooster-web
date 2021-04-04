@@ -25,9 +25,7 @@ jobs:
 
       - name: Run tests
         run: |
-          touch .env
-          docker-compose build test
-          docker-compose run test
+          echo TODO
 
       - name: Find version
         run: |
@@ -48,10 +46,6 @@ jobs:
       - name: Build image
         run: |
           docker-compose build prod
-
-      - name: Configure smoke test .env file
-        run: |
-          echo "${{ secrets.DOTENV_SMOKE_TEST }}" > .env
 
       - name: Smoke test Docker image
         run: |
