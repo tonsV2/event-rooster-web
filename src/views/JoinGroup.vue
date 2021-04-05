@@ -1,6 +1,6 @@
 <template>
-  <div class="join-group">
-    <h1>This is a "join group" page</h1>
+  <div>
+    <h1>Please select the group you wish to join</h1>
 
     <div v-if="errors.length">
       <b>The following error(s) occurred:</b>
@@ -9,17 +9,18 @@
       </ul>
     </div>
 
-    <ul v-if="groups">
-      <li v-bind:key="index" v-for="(group, index) in groups">
-        <div>Group {{ index + 1 }}: {{ group.datetime }} - {{ group.actualParticipants }} / {{ group.maxParticipants }}<button :disabled="isGroupFull(group)" @click="selectGroup(group, index)">Select</button></div>
-      </li>
-    </ul>
-
-    <div v-if="selectedGroup">
-      <span>You selected group number: {{selectedGroupIndex + 1}}</span>
-      <br>
-      <button @click="submit()" :disabled="clicked">Submit selection</button>
-    </div>
+    <form id="join-group" @submit="submit">
+      <div v-if="groups">
+        <div v-bind:key="index" v-for="(group, index) in groups">
+          <label>
+            <input type="radio" name="groupId" :value="group.id" :disabled="isGroupFull(group)" v-model="selectedGroup">
+            <span>Group {{ index + 1 }}: {{ group.datetime }} - {{ group.actualParticipants }} / {{ group.maxParticipants }}</span>
+          </label>
+          <br>
+        </div>
+      </div>
+      <input type="submit" value="Submit" :disabled="!selectedGroup">
+    </form>
 
     <div v-if="response">
       <span>Good choice! You should receive a mail with the event details soon</span>
@@ -43,9 +44,7 @@ export default {
       token: null,
       eventId: null,
       groups: null,
-      clicked: false,
       selectedGroup: null,
-      selectedGroupIndex: null,
       response: null
     }
   },
@@ -53,20 +52,14 @@ export default {
     isGroupFull(group) {
       return !(group.actualParticipants < group.maxParticipants)
     },
-    selectGroup(group, selectedGroupIndex) {
-      this.selectedGroupIndex = selectedGroupIndex
-      this.selectedGroup = group
-      this.clicked = false
-    },
-    submit() {
+    submit(e) {
+      e.preventDefault()
       this.errors = []
       const url = apiBaseUrl('/participants/groups')
-      const config = {params: {token: this.token, groupId: this.selectedGroup.id}}
-
+      const config = {params: {token: this.token, groupId: this.selectedGroup}}
       axios
           .post(url, {}, config)
           .then(response => {
-            this.clicked = true
             console.log(response.data)
             this.response = response.data
           })
