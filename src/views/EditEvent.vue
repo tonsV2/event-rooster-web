@@ -62,6 +62,9 @@
 import axios from "axios";
 import apiBaseUrl from '@/utils/api-base-url'
 
+import backgroundImage from '@/assets/pexels-artūras-kokorevas-2968388_resize.jpg'
+import setBackgroundImage from '@/utils/setBackgroundImage'
+
 export default {
   data() {
     return {
@@ -155,6 +158,8 @@ export default {
     }
   },
   mounted() {
+    setBackgroundImage(backgroundImage)
+
     this.token = this.$route.query.token
     if (this.token != null && this.token !== '') {
       const url = apiBaseUrl('/events/groups')
