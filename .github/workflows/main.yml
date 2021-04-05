@@ -38,14 +38,20 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
+          ENVIRONMENT=prod
+          [ "$VERSION" == "master" ] && ENVIRONMENT=dev
+          [ $GITHUB_REF == refs/heads/feature/* ] && ENVIRONMENT=feature
+
           # Export
+          echo "ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+          echo "ENVIRONMENT=$ENVIRONMENT"
           echo "VERSION=$VERSION"
 
       - name: Build image
         run: |
-          docker-compose build prod
+          docker-compose build --build-arg MODE=$ENVIRONMENT prod
 
       - name: Smoke test Docker image
         run: |
@@ -128,19 +134,16 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           FEATURE_TAG="-" helmfile -e dev sync --set image.pullPolicy=Always
-          echo "ENVIRONMENT=dev" >> $GITHUB_ENV
 
       - name: Deploy to Production
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           FEATURE_TAG="-" helmfile -e prod sync
-          echo "ENVIRONMENT=prod" >> $GITHUB_ENV
 
       - name: Deploy Feature Branch
         if: startsWith(github.ref, 'refs/heads/feature/')
         run: |
           FEATURE_TAG="${{ env.VERSION }}" helmfile -e feature sync --set image.pullPolicy=Always
-          echo "ENVIRONMENT=feature" >> $GITHUB_ENV
 
       - name: Smoke test deployment
         run: |
