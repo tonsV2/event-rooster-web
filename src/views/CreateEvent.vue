@@ -1,7 +1,5 @@
 <template>
   <div class="create-event">
-    <h1>This is a "create event" page</h1>
-
     <div v-if="errors.length">
       <b>The following error(s) occurred:</b>
       <ul>
@@ -41,6 +39,9 @@
 </template>
 
 <script>
+import backgroundImage from '@/assets/pexels-karl-solano-2729899.jpg'
+import setBackgroundImage from '@/utils/setBackgroundImage'
+
 import axios from "axios";
 import apiBaseUrl from '@/utils/api-base-url'
 
@@ -101,6 +102,9 @@ export default {
       }
 
     }
+  },
+  mounted () {
+    setBackgroundImage(backgroundImage)
   }
 }
 </script>

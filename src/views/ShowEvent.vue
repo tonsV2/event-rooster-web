@@ -36,6 +36,9 @@
 </template>
 
 <script>
+import backgroundImage from '@/assets/shutterstock_582394888_resize.jpg'
+import setBackgroundImage from '@/utils/setBackgroundImage'
+
 import axios from "axios";
 import apiBaseUrl from '@/utils/api-base-url'
 
@@ -84,6 +87,8 @@ export default {
     }
   },
   mounted() {
+    setBackgroundImage(backgroundImage)
+
     this.token = this.$route.query.token
     if (this.token != null && this.token !== '') {
       this.getEvent()
