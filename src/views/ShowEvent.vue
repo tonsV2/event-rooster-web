@@ -69,6 +69,7 @@ export default {
             this.event = response.data
           })
           .catch(error => {
+            loading.unload()
             console.log(error)
             this.errors.push(error.response.data.error)
           })
@@ -85,6 +86,7 @@ export default {
             this.ungroupedParticipants = response.data
           })
           .catch(error => {
+            loading.unload()
             console.log(error)
             this.errors.push(error)
           })

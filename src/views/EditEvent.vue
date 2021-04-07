@@ -124,6 +124,7 @@ export default {
                 }
               })
               .catch(error => {
+                loading.unload()
                 const e = error.response.data.error;
                 console.log(e)
                 this.errors.push(e)
@@ -162,6 +163,7 @@ export default {
             this.errors = []
           })
           .catch(error => {
+            loading.unload()
             console.log(error)
             this.errors.push(error)
           })
@@ -184,6 +186,7 @@ export default {
             this.groups = data.groups
           })
           .catch(error => {
+            loading.unload()
             console.log(error)
             this.errors.push(error.response.data.error)
           })

@@ -100,6 +100,7 @@ export default {
                 this.response = response.data
               })
               .catch(error => {
+                loading.unload()
                 console.log(error)
                 this.errors.push(error.response.data.error)
               })

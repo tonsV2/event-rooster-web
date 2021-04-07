@@ -101,6 +101,7 @@ export default {
             this.groups = response.data
           })
           .catch(error => {
+            loading.unload()
             console.log(error)
             this.errors.push(error)
           })
