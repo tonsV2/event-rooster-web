@@ -2,6 +2,10 @@
   <div>
     <h1>Please select the group you wish to join</h1>
 
+    <div class="spinner-border" role="status" v-if="loading.isLoading()">
+      <span class="sr-only">Loading...</span>
+    </div>
+
     <div v-if="errors.length">
       <b>The following error(s) occurred:</b>
       <ul>
@@ -36,9 +40,12 @@ import setBackgroundImage from '@/utils/setBackgroundImage'
 
 import axios from '@/utils/axios-client'
 
+import loading from '@/utils/loading'
+
 export default {
   data() {
     return {
+      loading: loading,
       errors: [],
       token: null,
       eventId: null,
@@ -56,9 +63,12 @@ export default {
       this.errors = []
       const url = '/participants/groups'
       const config = {params: {token: this.token, groupId: this.selectedGroup}}
+
+      loading.load()
       axios
           .post(url, {}, config)
           .then(response => {
+            loading.unload()
             console.log(response.data)
             this.response = response.data
           })
@@ -83,9 +93,11 @@ export default {
       const url = '/events/groups-count'
       const config = {params: {eventId: this.eventId, token: this.token}}
 
+      loading.load()
       axios
           .get(url, config)
           .then(response => {
+            loading.unload()
             this.groups = response.data
           })
           .catch(error => {

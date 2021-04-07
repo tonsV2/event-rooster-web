@@ -1,5 +1,10 @@
 <template>
   <div class="create-event">
+
+    <div class="spinner-border" role="status" v-if="loading.isLoading()">
+      <span class="sr-only">Loading...</span>
+    </div>
+
     <div v-if="errors.length">
       <b>The following error(s) occurred:</b>
       <ul>
@@ -44,9 +49,12 @@ import setBackgroundImage from '@/utils/setBackgroundImage'
 
 import axios from '@/utils/axios-client'
 
+import loading from '@/utils/loading'
+
 export default {
   data() {
     return {
+      loading: loading,
       clicked: false,
       errors: [],
       title: null,
@@ -82,9 +90,11 @@ export default {
             email: this.email
           }
 
+          loading.load()
           axios
               .post(url, data)
               .then(response => {
+                loading.unload()
                 this.clicked = true
                 console.log(response.data)
                 this.response = response.data

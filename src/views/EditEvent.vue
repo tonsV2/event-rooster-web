@@ -2,6 +2,10 @@
   <div class="edit-event">
     <h1>{{ title }}</h1>
 
+    <div class="spinner-border" role="status" v-if="loading.isLoading()">
+      <span class="sr-only">Loading...</span>
+    </div>
+
     <div v-if="errors.length">
       <b>The following error(s) occurred:</b>
       <ul>
@@ -64,9 +68,12 @@ import axios from '@/utils/axios-client'
 import backgroundImage from '@/assets/pexels-artūras-kokorevas-2968388_resize.jpg'
 import setBackgroundImage from '@/utils/setBackgroundImage'
 
+import loading from '@/utils/loading'
+
 export default {
   data() {
     return {
+      loading: loading,
       errors: [],
       showAddGroupForm: false,
       showAddParticipantsForm: false,
@@ -106,9 +113,11 @@ export default {
             datetime: new Date(this.datetime).toISOString()
           }
 
+          loading.load()
           axios
               .post(url, data, config)
               .then(response => {
+                loading.unload()
                 if (response.status === 201) {
                   this.showAddGroupForm = false
                   this.groups.push(response.data)
@@ -143,9 +152,11 @@ export default {
         params: {token: this.token}
       }
 
+      loading.load()
       axios
           .post(url, data, config)
           .then(response => {
+            loading.unload()
             this.response = response.data
             this.showAddParticipantsForm = false
             this.errors = []
@@ -164,8 +175,10 @@ export default {
       const url = '/events/groups'
       const config = {params: {token: this.token}}
 
+      loading.load()
       axios.get(url, config)
           .then(response => {
+            loading.unload()
             const data = response.data
             this.title = data.title
             this.groups = data.groups
