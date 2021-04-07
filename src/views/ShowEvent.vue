@@ -39,8 +39,7 @@
 import backgroundImage from '@/assets/shutterstock_582394888_resize.jpg'
 import setBackgroundImage from '@/utils/setBackgroundImage'
 
-import axios from "axios";
-import apiBaseUrl from '@/utils/api-base-url'
+import axios from '@/utils/axios-client'
 
 export default {
   data() {
@@ -52,7 +51,7 @@ export default {
   },
   methods: {
     getEvent() {
-      const url = apiBaseUrl('/events')
+      const url = '/events'
       const config = {params: {token: this.token}}
 
       axios
@@ -66,7 +65,7 @@ export default {
           })
     },
     getUngroupedParticipants() {
-      const url = apiBaseUrl('/participants/not-in-groups')
+      const url = '/participants/not-in-groups'
       const config = {params: {token: this.token}}
 
       axios

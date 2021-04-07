@@ -34,8 +34,7 @@
 import backgroundImage from '@/assets/shutterstock_1774837916_resize.png'
 import setBackgroundImage from '@/utils/setBackgroundImage'
 
-import axios from "axios";
-import apiBaseUrl from '@/utils/api-base-url'
+import axios from '@/utils/axios-client'
 
 export default {
   data() {
@@ -55,7 +54,7 @@ export default {
     submit(e) {
       e.preventDefault()
       this.errors = []
-      const url = apiBaseUrl('/participants/groups')
+      const url = '/participants/groups'
       const config = {params: {token: this.token, groupId: this.selectedGroup}}
       axios
           .post(url, {}, config)
@@ -81,7 +80,7 @@ export default {
     }
 
     if (this.token != null && this.token !== '' && this.eventId !== '') {
-      const url = apiBaseUrl('/events/groups-count')
+      const url = '/events/groups-count'
       const config = {params: {eventId: this.eventId, token: this.token}}
 
       axios

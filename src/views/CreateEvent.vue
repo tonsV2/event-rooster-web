@@ -42,8 +42,7 @@
 import backgroundImage from '@/assets/pexels-karl-solano-2729899.jpg'
 import setBackgroundImage from '@/utils/setBackgroundImage'
 
-import axios from "axios";
-import apiBaseUrl from '@/utils/api-base-url'
+import axios from '@/utils/axios-client'
 
 export default {
   data() {
@@ -75,7 +74,7 @@ export default {
       }
 
       if (this.errors.length < 1) {
-        const url = apiBaseUrl('/events')
+        const url = '/events'
         try {
           const data = {
             title: this.title,
