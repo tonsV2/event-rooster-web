@@ -148,5 +148,6 @@ jobs:
       - name: Smoke test deployment
         run: |
           URL=$(FEATURE_TAG="${{ env.VERSION }}" helmfile -e ${{ env.ENVIRONMENT }} template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
+          echo "URL: $URL"
           sleep 10
           curl --fail --insecure --location --max-time 10 "$URL/health"
