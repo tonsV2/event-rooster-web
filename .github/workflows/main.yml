@@ -39,7 +39,7 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
 
           ENVIRONMENT=prod
-          [ "$VERSION" == "master" ] && ENVIRONMENT=dev
+          [ "$VERSION" == "latest" ] && ENVIRONMENT=dev
           [ $GITHUB_REF == refs/heads/feature/* ] && ENVIRONMENT=feature
 
           # Export
