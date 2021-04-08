@@ -35,11 +35,21 @@
       <p>
         <input type="submit" value="Submit" :disabled="clicked" class="btn btn-primary">
       </p>
-
-      <pre v-if="response">
-        {{ response }}
-      </pre>
     </form>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Event created</h5>
+          </div>
+          <div class="modal-body">A mail with instructions on how to proceed has been sent to {{email}}</div>
+        </div>
+      </div>
+    </div>
+
+    <button style="visibility: hidden" id="show-modal" data-toggle="modal" data-target="#exampleModal"></button>
+
   </div>
 </template>
 
@@ -50,6 +60,8 @@ import setBackgroundImage from '@/utils/setBackgroundImage'
 import axios from '@/utils/axios-client'
 
 import loading from '@/utils/loading'
+
+import $ from 'jquery'
 
 export default {
   data() {
@@ -64,6 +76,9 @@ export default {
     }
   },
   methods: {
+    showModal() {
+      $('#show-modal').click()
+    },
     submit(e) {
       e.preventDefault()
 
@@ -82,6 +97,9 @@ export default {
       }
 
       if (this.errors.length < 1) {
+
+        this.clicked = true
+
         const url = '/events'
         try {
           const data = {
@@ -95,7 +113,7 @@ export default {
               .post(url, data)
               .then(response => {
                 loading.unload()
-                this.clicked = true
+                this.showModal()
                 console.log(response.data)
                 this.response = response.data
               })
@@ -106,7 +124,6 @@ export default {
               })
 
         } catch (error) {
-          console.log(error)
           this.errors.push(error)
         }
       }
