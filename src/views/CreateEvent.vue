@@ -1,5 +1,5 @@
 <template>
-  <div class="create-event">
+  <div id="create-event">
 
     <div class="spinner-border" role="status" v-if="loading.isLoading()">
       <span class="sr-only">Loading...</span>
@@ -12,28 +12,28 @@
       </ul>
     </div>
 
-    <form id="create-event" @submit="submit">
+    <form id="create-event-form" @submit="submit" class="form-group">
 
       <p>
         <label>
-          <input id="title" v-model="title" type="text" name="title" placeholder="Title">
+          <input id="title" v-model="title" type="text" name="title" placeholder="Event name" class="form-control">
         </label>
       </p>
 
       <p>
         <label>
-          <input id="datetime" v-model="datetime" type="datetime-local" name="datetime">
+          <input id="datetime" v-model="datetime" type="datetime-local" name="datetime" class="form-control">
         </label>
       </p>
 
       <p>
         <label>
-          <input id="email" v-model="email" type="email" name="email" placeholder="some@mail.com">
+          <input id="email" v-model="email" type="email" name="email" placeholder="some@mail.com" class="form-control">
         </label>
       </p>
 
       <p>
-        <input type="submit" value="Submit" :disabled="clicked">
+        <input type="submit" value="Submit" :disabled="clicked" class="btn btn-primary">
       </p>
 
       <pre v-if="response">
@@ -122,5 +122,13 @@ export default {
 <style scoped>
 .form-error {
   color: red
+}
+
+#create-event-form {
+  border-radius: 25px;
+  background: white;
+  width: 20%;
+  margin-left: 5%;
+  padding: 2% 2% 1%;
 }
 </style>
