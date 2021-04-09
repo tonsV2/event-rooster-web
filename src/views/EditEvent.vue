@@ -1,6 +1,5 @@
 <template>
   <div class="edit-event">
-    <h1>{{ title }}</h1>
 
     <div class="spinner-border" role="status" v-if="loading.isLoading()">
       <span class="sr-only">Loading...</span>
@@ -13,51 +12,54 @@
       </ul>
     </div>
 
-    <ul>
-      <li v-bind:key="index" v-for="(group, index) in groups">
-        {{ group.maxParticipants }} - {{ group.datetime }}
-      </li>
-    </ul>
+    <div class="row">
+      <div class="col-lg-4">
+        <h1>{{ title }}</h1>
+        <form id="add-group" @submit="postGroup" class="form-group form-box">
+          <fieldset>
+            <legend>Add Group</legend>
+            <p>
+              <label>
+                <input type="number" v-model="maxParticipants" placeholder="Max Participants" class="form-control">
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="datetime-local" v-model="datetime" class="form-control">
+              </label>
+            </p>
+            <p>
+              <input type="submit" value="Submit" class="form-control">
+            </p>
+          </fieldset>
+        </form>
 
-    <button class="btn btn-primary" @click="toggleShowAddGroupForm">Add group</button>
-    <br>
-    <button class="btn btn-primary" @click="toggleShowAddParticipantsForm">Add participants</button>
+        <form id="add-participants" @submit="postParticipants" class="form-group form-box">
+          <fieldset>
+            <legend>Add Participants</legend>
+            <p>
+              <label>
+                <input type="file" id="file" class="form-control">
+              </label>
+            </p>
+            <p>
+              <input type="submit" value="Submit" class="form-control">
+            </p>
+          </fieldset>
+          <pre v-if="response">{{ response }}</pre>
+        </form>
 
-    <form v-if="showAddGroupForm" id="add-group" @submit="postGroup">
-
-      <p>
-        <label>
-          <input type="number" v-model="maxParticipants" placeholder="Max Participants">
-        </label>
-      </p>
-
-      <p>
-        <label>
-          <input type="datetime-local" v-model="datetime">
-        </label>
-      </p>
-
-      <p>
-        <input type="submit" value="Submit">
-      </p>
-
-    </form>
-
-    <form v-if="showAddParticipantsForm" id="add-participants" @submit="postParticipants">
-
-      <p>
-        <label>
-          <input type="file" id="file">
-        </label>
-      </p>
-
-      <p>
-        <input type="submit" value="Submit">
-      </p>
-
-    </form>
-
-    <pre v-if="response">{{ response }}</pre>
+      </div>
+      <div class="col-lg-4">
+        <ol class="list-group" v-if="groups">
+          <li v-bind:key="index" v-for="(group, index) in groups" class="list-group-item">
+            {{index + 1}}. Group - <span>{{ group.maxParticipants }} - {{ group.datetime }}</span>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-4">
+      </div>
+    </div>
 
   </div>
 </template>
@@ -75,8 +77,6 @@ export default {
     return {
       loading: loading,
       errors: [],
-      showAddGroupForm: false,
-      showAddParticipantsForm: false,
       title: null,
       groups: [],
       maxParticipants: null,
@@ -85,12 +85,6 @@ export default {
     }
   },
   methods: {
-    toggleShowAddGroupForm() {
-      this.showAddGroupForm = !this.showAddGroupForm
-    },
-    toggleShowAddParticipantsForm() {
-      this.showAddParticipantsForm = !this.showAddParticipantsForm
-    },
     postGroup(e) {
       e.preventDefault()
 
@@ -201,5 +195,23 @@ export default {
 <style scoped>
 .form-error {
   color: red
+}
+
+.form-box {
+  border-radius: 25px;
+  background: white;
+  width: 60%;
+  margin-left: 5%;
+  padding: 2% 2% 1%;
+}
+
+.list-group {
+  width: 80%;
+}
+
+h1 {
+  text-align: left;
+  margin-left: 10%;
+  font-weight: bold;
 }
 </style>
