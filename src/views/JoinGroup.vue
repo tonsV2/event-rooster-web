@@ -13,23 +13,31 @@
       </ul>
     </div>
 
-    <form id="join-group" @submit="submit">
+    <form id="join-group" @submit="submit" class="form-group">
       <div v-if="groups">
-        <div v-bind:key="index" v-for="(group, index) in groups">
+        <div v-bind:key="index" v-for="(group, index) in groups" class="form-check">
           <label>
-            <input type="radio" name="groupId" :value="group.id" :disabled="isGroupFull(group)" v-model="selectedGroup">
+            <input type="radio" name="groupId" :value="group.id" :disabled="isGroupFull(group)" v-model="selectedGroup" class="form-check-input">
             <span>Group {{ index + 1 }}: {{ group.datetime }} - {{ group.actualParticipants }} / {{ group.maxParticipants }}</span>
           </label>
           <br>
         </div>
       </div>
-      <input type="submit" value="Submit" :disabled="!selectedGroup">
+      <input type="submit" value="Submit" :disabled="!selectedGroup" class="btn btn-primary">
     </form>
 
-    <div v-if="response">
-      <span>Good choice! You should receive a mail with the event details soon</span>
-      <pre>{{ response }}</pre>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Good choice!</h5>
+          </div>
+          <div class="modal-body">We've sent an email with event details to {{email}}</div>
+        </div>
+      </div>
     </div>
+
+    <button style="visibility: hidden" id="show-modal" data-toggle="modal" data-target="#exampleModal"></button>
 
   </div>
 </template>
@@ -42,6 +50,8 @@ import axios from '@/utils/axios-client'
 
 import loading from '@/utils/loading'
 
+import $ from 'jquery'
+
 export default {
   data() {
     return {
@@ -51,10 +61,13 @@ export default {
       eventId: null,
       groups: null,
       selectedGroup: null,
-      response: null
+      email: null
     }
   },
   methods: {
+    showModal() {
+      $('#show-modal').click()
+    },
     isGroupFull(group) {
       return !(group.actualParticipants < group.maxParticipants)
     },
@@ -70,7 +83,8 @@ export default {
           .then(response => {
             loading.unload()
             console.log(response.data)
-            this.response = response.data
+            this.email = response.data.email
+            this.showModal()
           })
           .catch(error => {
             console.log(error)
