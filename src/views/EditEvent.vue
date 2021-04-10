@@ -46,7 +46,7 @@
               <input type="submit" value="Submit" class="form-control">
             </p>
           </fieldset>
-          <pre v-if="response">{{ response }}</pre>
+          <div v-if="csvResponse">{{csvResponse.parsed}} participants parsed, found {{csvResponse.new}} new</div>
         </form>
 
       </div>
@@ -81,7 +81,7 @@ export default {
       groups: [],
       maxParticipants: null,
       datetime: null,
-      response: null
+      csvResponse: null
     }
   },
   methods: {
@@ -152,8 +152,7 @@ export default {
           .post(url, data, config)
           .then(response => {
             loading.unload()
-            this.response = response.data
-            this.showAddParticipantsForm = false
+            this.csvResponse = response.data
             this.errors = []
           })
           .catch(error => {
