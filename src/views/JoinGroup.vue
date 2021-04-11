@@ -85,12 +85,39 @@ export default {
             console.log(response.data)
             this.email = response.data.email
             this.showModal()
+            this.fetchGroups()
           })
           .catch(error => {
             console.log(error)
             this.errors.push(error.response.data.error)
           })
 
+    },
+    fetchGroups() {
+      if (this.eventId == null || this.eventId === '') {
+        this.errors.push('Missing id!')
+      }
+
+      if (this.token != null && this.token !== '' && this.eventId !== '') {
+        const url = '/events/groups-count'
+        const config = {params: {eventId: this.eventId, token: this.token}}
+
+        loading.load()
+        axios
+            .get(url, config)
+            .then(response => {
+              loading.unload()
+              this.groups = response.data
+            })
+            .catch(error => {
+              loading.unload()
+              console.log(error)
+              this.errors.push(error)
+            })
+
+      } else {
+        this.errors.push('Missing token!')
+      }
     }
   },
   mounted() {
@@ -99,30 +126,7 @@ export default {
     this.token = this.$route.query.token
     this.eventId = this.$route.query.eventId
 
-    if (this.eventId == null || this.eventId === '') {
-      this.errors.push('Missing id!')
-    }
-
-    if (this.token != null && this.token !== '' && this.eventId !== '') {
-      const url = '/events/groups-count'
-      const config = {params: {eventId: this.eventId, token: this.token}}
-
-      loading.load()
-      axios
-          .get(url, config)
-          .then(response => {
-            loading.unload()
-            this.groups = response.data
-          })
-          .catch(error => {
-            loading.unload()
-            console.log(error)
-            this.errors.push(error)
-          })
-
-    } else {
-      this.errors.push('Missing token!')
-    }
+    this.fetchGroups()
   }
 }
 </script>
