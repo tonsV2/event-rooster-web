@@ -53,7 +53,7 @@
       <div class="col-lg-4">
         <ol class="list-group" v-if="groups">
           <li v-bind:key="index" v-for="(group, index) in groups" class="list-group-item">
-            {{index + 1}}. Group - <span>{{ group.maxParticipants }} - {{ group.datetime }}</span>
+            {{group.gid}}. Group - <span>{{ group.maxParticipants }} - {{ group.datetime }}</span>
           </li>
         </ol>
       </div>
@@ -103,6 +103,7 @@ export default {
         const config = {params: {token: this.token}}
         try {
           const data = {
+            gid: (this.groups.length + 1).toString(),
             maxParticipants: parseInt(this.maxParticipants),
             datetime: new Date(this.datetime).toISOString()
           }

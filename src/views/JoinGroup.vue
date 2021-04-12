@@ -18,7 +18,7 @@
         <div v-bind:key="index" v-for="(group, index) in groups" class="form-check">
           <label>
             <input type="radio" name="groupId" :value="group.id" :disabled="isGroupFull(group)" v-model="selectedGroup" class="form-check-input">
-            <span>Group {{ index + 1 }}: {{ group.datetime }} - {{ group.actualParticipants }} / {{ group.maxParticipants }}</span>
+            <span>Group {{ group.gid }}: {{ group.datetime }} - {{ group.actualParticipants }} / {{ group.maxParticipants }}</span>
           </label>
           <br>
         </div>
