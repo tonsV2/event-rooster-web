@@ -62,6 +62,7 @@ import axios from '@/utils/axios-client'
 import loading from '@/utils/loading'
 
 import $ from 'jquery'
+import {toISOWithOffsetString} from '@/utils/datetime'
 
 export default {
   data() {
@@ -104,7 +105,7 @@ export default {
         try {
           const data = {
             title: this.title,
-            datetime: new Date(this.datetime).toISOString(),
+            datetime: toISOWithOffsetString(this.datetime),
             email: this.email
           }
 

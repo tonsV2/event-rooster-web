@@ -53,7 +53,7 @@
       <div class="col-lg-4">
         <ol class="list-group" v-if="groups">
           <li v-bind:key="index" v-for="(group, index) in groups" class="list-group-item">
-            {{group.gid}}. Group - <span>{{ group.maxParticipants }} - {{ group.datetime }}</span>
+            {{group.gid}}. Group - <span>{{ group.maxParticipants }} - {{ toLocaleDatetimeString(group.datetime) }}</span>
           </li>
         </ol>
       </div>
@@ -72,10 +72,13 @@ import setBackgroundImage from '@/utils/setBackgroundImage'
 
 import loading from '@/utils/loading'
 
+import {toLocaleDatetimeString, toISOWithOffsetString} from '@/utils/datetime'
+
 export default {
   data() {
     return {
       loading: loading,
+      toLocaleDatetimeString: toLocaleDatetimeString,
       errors: [],
       title: null,
       groups: [],
@@ -105,7 +108,7 @@ export default {
           const data = {
             gid: (this.groups.length + 1).toString(),
             maxParticipants: parseInt(this.maxParticipants),
-            datetime: new Date(this.datetime).toISOString()
+            datetime: toISOWithOffsetString(this.datetime)
           }
 
           loading.load()
