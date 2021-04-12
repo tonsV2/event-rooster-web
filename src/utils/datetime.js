@@ -9,4 +9,4 @@ function toISOWithOffsetString(datetime) {
     return moment(new Date(datetime)).format()
 }
 
-export { toLocaleDatetimeString, toISOWithOffsetString }
+export {toLocaleDatetimeString, toISOWithOffsetString}
