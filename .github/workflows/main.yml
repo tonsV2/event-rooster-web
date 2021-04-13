@@ -160,4 +160,4 @@ jobs:
       - name: E2E tests
         uses: cypress-io/github-action@v2
         env:
-          CYPRESS_BASE_URL: ${{ env.URL }}
+          CYPRESS_BASE_URL: https://${{ env.URL }}
