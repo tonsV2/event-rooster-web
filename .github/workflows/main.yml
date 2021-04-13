@@ -145,9 +145,19 @@ jobs:
         run: |
           FEATURE_TAG="${{ env.VERSION }}" helmfile -e feature sync --set image.pullPolicy=Always
 
-      - name: Smoke test deployment
+      - name: Find application URL
         run: |
           URL=$(FEATURE_TAG="${{ env.VERSION }}" helmfile -e ${{ env.ENVIRONMENT }} template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
           echo "URL: $URL"
+          echo "URL=$URL" >> $GITHUB_ENV
+
+      - name: Smoke test deployment
+        run: |
           sleep 10
-          curl --fail --insecure --location --max-time 10 "$URL/health"
+          curl --fail --insecure --location --max-time 10 "${{ env.URL }}/health"
+
+
+      - name: E2E tests
+        uses: cypress-io/github-action@v2
+        env:
+          CYPRESS_BASE_URL: ${{ env.URL }}
