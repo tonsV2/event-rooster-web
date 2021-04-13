@@ -3,7 +3,7 @@ import {toLocaleDatetimeString} from '../../src/utils/datetime'
 let token = ''
 
 describe('Create event', () => {
-    const email = 'sebastianthegreatful@gmail.com'
+    const email = 'test@mail.com'
 
     it('Opens the create event page', () => {
         cy.visit('/create-event')
