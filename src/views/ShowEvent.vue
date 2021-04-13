@@ -12,13 +12,13 @@
     <div v-if="event">
       <div v-bind:key="index" v-for="(group, index) in event.groups">
         <span>Group {{ group.gid }}: {{ group.datetime }} - {{ getParticipantsLength(group) }} / {{ group.maxParticipants }}</span>
-        <ParticipantsList :event="event" :participants="group.participants"/>
+        <ParticipantsList id="grouped-participants" :event="event" :participants="group.participants"/>
       </div>
     </div>
 
-    <div v-if="hasUngroupedParticipants()" id="ungrouped-participants" class="row">
+    <div v-if="hasUngroupedParticipants()" class="row">
       <h2>Ungrouped participants</h2>
-      <ParticipantsList :event="event" :participants="ungroupedParticipants"/>
+      <ParticipantsList id="ungrouped-participants" :event="event" :participants="ungroupedParticipants"/>
     </div>
 
   </div>
