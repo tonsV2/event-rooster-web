@@ -1,5 +1,12 @@
 <template>
-  <div class="edit-event">
+  <div v-if="errors.length">
+    <b>The following error(s) occurred:</b>
+    <ul>
+      <li class="error" v-bind:key="index" v-for="(error, index) in errors">{{ error }}</li>
+    </ul>
+  </div>
+
+  <div id="show-event" class="row mx-auto">
     <h1 v-if="event">{{ event.title }}</h1>
 
     <div v-if="event">
@@ -99,4 +106,18 @@ export default {
 .error {
   color: red
 }
+
+#show-event {
+  width: 80%;
+}
+
+#ungrouped-participants {
+  margin-top: 3%;
+}
+
+h1, h2 {
+  font-weight: bold;
+  color: black;
+}
+
 </style>
