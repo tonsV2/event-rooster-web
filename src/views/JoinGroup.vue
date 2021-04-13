@@ -18,7 +18,7 @@
         <div v-bind:key="index" v-for="(group, index) in groups" class="form-check">
           <label>
             <input type="radio" name="groupId" :value="group.id" :disabled="isGroupFull(group)" v-model="selectedGroup" class="form-check-input">
-            <span>Group {{ group.gid }}: {{ group.datetime }} - {{ group.actualParticipants }} / {{ group.maxParticipants }}</span>
+            <span>Group {{ group.gid }}: {{ toLocaleDatetimeString(group.datetime) }} - {{ group.actualParticipants }} / {{ group.maxParticipants }}</span>
           </label>
           <br>
         </div>
@@ -51,11 +51,13 @@ import axios from '@/utils/axios-client'
 import loading from '@/utils/loading'
 
 import $ from 'jquery'
+import {toLocaleDatetimeString} from '@/utils/datetime'
 
 export default {
   data() {
     return {
       loading: loading,
+      toLocaleDatetimeString: toLocaleDatetimeString,
       errors: [],
       token: null,
       eventId: null,
