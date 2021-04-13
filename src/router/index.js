@@ -18,7 +18,7 @@ const routes = [
   },
   {
     path: '/join-group',
-    name: 'JoinGroup',
+    name: 'join-group',
     component: () => import('../views/JoinGroup.vue')
   },
   {

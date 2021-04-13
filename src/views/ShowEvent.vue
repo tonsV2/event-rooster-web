@@ -2,38 +2,16 @@
   <div class="edit-event">
     <h1 v-if="event">{{ event.title }}</h1>
 
-    <div class="spinner-border" role="status" v-if="loading.isLoading()">
-      <span class="sr-only">Loading...</span>
+    <div v-if="event">
+      <div v-bind:key="index" v-for="(group, index) in event.groups">
+        <span>Group {{ group.gid }}: {{ group.datetime }} - {{ getParticipantsLength(group) }} / {{ group.maxParticipants }}</span>
+        <ParticipantsList :event="event" :participants="group.participants"/>
+      </div>
     </div>
 
-    <div v-if="errors.length">
-      <b>The following error(s) occurred:</b>
-      <ul>
-        <li class="error" v-bind:key="index" v-for="(error, index) in errors">{{ error }}</li>
-      </ul>
-    </div>
-
-    <ul v-if="event">
-      <li v-bind:key="index" v-for="(group, index) in event.groups">
-        <div>
-          <span>Group {{ index + 1 }}: {{ group.datetime }} - {{ getParticipantsLength(group) }} / {{ group.maxParticipants }}</span>
-          <ul>
-            <li v-bind:key="index" v-for="(participant, index) in group.participants">
-              <span>{{ participant }}</span>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-
-    <hr>
-    <div v-if="hasUngroupedParticipants()">
+    <div v-if="hasUngroupedParticipants()" id="ungrouped-participants" class="row">
       <h2>Ungrouped participants</h2>
-      <ul>
-        <li v-bind:key="index" v-for="(participant, index) in ungroupedParticipants">
-          <span>{{ participant }}</span>
-        </li>
-      </ul>
+      <ParticipantsList :event="event" :participants="ungroupedParticipants"/>
     </div>
 
   </div>
@@ -45,9 +23,14 @@ import setBackgroundImage from '@/utils/setBackgroundImage'
 
 import axios from '@/utils/axios-client'
 
+import ParticipantsList from "@/components/ParticipantsList"
+
 import loading from '@/utils/loading'
 
 export default {
+  components: {
+    ParticipantsList
+  },
   data() {
     return {
       loading: loading,
