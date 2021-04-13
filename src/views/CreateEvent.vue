@@ -37,18 +37,19 @@
       </p>
     </form>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Event created</h5>
+            <h5 class="modal-title" id="createEventModalLabel">Event created</h5>
           </div>
-          <div class="modal-body">A mail with instructions on how to proceed has been sent to {{email}}</div>
+          <div class="modal-body" id="createEventModalBody">A mail with instructions on how to proceed has been sent to {{email}}</div>
         </div>
       </div>
     </div>
 
-    <button style="visibility: hidden" id="show-modal" data-toggle="modal" data-target="#exampleModal"></button>
+    <button style="visibility: hidden" id="show-modal" data-toggle="modal" data-target="#createEventModal"></button>
+    <input type="hidden" id="token" v-model="token"/>
 
   </div>
 </template>
@@ -73,7 +74,7 @@ export default {
       title: null,
       datetime: null,
       email: null,
-      response: null
+      token: null
     }
   },
   methods: {
@@ -116,7 +117,7 @@ export default {
                 loading.unload()
                 this.showModal()
                 console.log(response.data)
-                this.response = response.data
+                this.token = response.data.token
               })
               .catch(error => {
                 loading.unload()

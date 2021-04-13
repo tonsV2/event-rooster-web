@@ -20,16 +20,16 @@
             <legend>Add Group</legend>
             <p>
               <label>
-                <input type="number" v-model="maxParticipants" placeholder="Max Participants" class="form-control">
+                <input id="maxParticipants" type="number" v-model="maxParticipants" placeholder="Max Participants" class="form-control">
               </label>
             </p>
             <p>
               <label>
-                <input type="datetime-local" v-model="datetime" class="form-control">
+                <input id="datetime" type="datetime-local" v-model="datetime" class="form-control">
               </label>
             </p>
             <p>
-              <input type="submit" value="Submit" class="form-control">
+              <input id="submit-group" type="submit" value="Submit" class="form-control">
             </p>
           </fieldset>
         </form>
@@ -43,15 +43,15 @@
               </label>
             </p>
             <p>
-              <input type="submit" value="Submit" class="form-control">
+              <input id="submit-participants" type="submit" value="Submit" class="form-control">
             </p>
           </fieldset>
-          <div v-if="csvResponse">{{csvResponse.parsed}} participants parsed, found {{csvResponse.new}} new</div>
+          <div v-if="csvResponse" id="upload-response">{{csvResponse.parsed}} participants parsed, found {{csvResponse.new}} new</div>
         </form>
 
       </div>
       <div class="col-lg-4">
-        <ol class="list-group" v-if="groups">
+        <ol id="groups" class="list-group" v-if="groups">
           <li v-bind:key="index" v-for="(group, index) in groups" class="list-group-item">
             {{group.gid}}. Group - <span>{{ group.maxParticipants }} - {{ toLocaleDatetimeString(group.datetime) }}</span>
           </li>
@@ -117,7 +117,6 @@ export default {
               .then(response => {
                 loading.unload()
                 if (response.status === 201) {
-                  this.showAddGroupForm = false
                   this.groups.push(response.data)
                 }
               })
