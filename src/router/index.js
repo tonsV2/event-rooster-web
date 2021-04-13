@@ -3,17 +3,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/create-event',
-    name: 'CreateEvent',
+    name: 'create-event',
     component: () => import('../views/CreateEvent.vue')
   },
   {
     path: '/edit-event',
-    name: 'EditEvent',
+    name: 'edit-event',
     component: () => import('../views/EditEvent.vue')
   },
   {
     path: '/show-event',
-    name: 'ShowEvent',
+    name: 'show-event',
     component: () => import('../views/ShowEvent.vue')
   },
   {
@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/about',
-    name: 'About',
+    name: 'about',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -31,7 +31,7 @@ const routes = [
   },
   {
     path: '/contact',
-    name: 'Contact',
+    name: 'contact',
     component: () => import('../views/Contact.vue')
   },
   {
