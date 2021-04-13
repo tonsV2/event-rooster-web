@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import backgroundImage from '@/assets/shutterstock_582394888_resize.jpg'
+import backgroundImage from '@/assets/pexels-andrea-piacquadio-3764538.jpg'
 import setBackgroundImage from '@/utils/setBackgroundImage'
 
 import axios from '@/utils/axios-client'
