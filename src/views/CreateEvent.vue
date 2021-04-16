@@ -91,7 +91,7 @@ export default {
       }
 
       if (!this.datetime || new Date(this.datetime) < new Date()) {
-        this.errors.push('A valid future date is equired')
+        this.errors.push('A valid future date is required')
       }
 
       if (!this.email) {
