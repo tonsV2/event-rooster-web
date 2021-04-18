@@ -1,4 +1,6 @@
 <template>
+  <AdminNavigation />
+
   <div class="edit-event">
 
     <div class="spinner-border" role="status" v-if="loading.isLoading()">
@@ -70,11 +72,16 @@ import axios from '@/utils/axios-client'
 import backgroundImage from '@/assets/pexels-artūras-kokorevas-2968388_resize.jpg'
 import setBackgroundImage from '@/utils/setBackgroundImage'
 
+import AdminNavigation from "@/components/AdminNavigation"
+
 import loading from '@/utils/loading'
 
 import {toLocaleDatetimeString, toISOWithOffsetString} from '@/utils/datetime'
 
 export default {
+  components: {
+    AdminNavigation,
+  },
   data() {
     return {
       loading: loading,

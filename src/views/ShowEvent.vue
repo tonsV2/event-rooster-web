@@ -1,4 +1,6 @@
 <template>
+  <AdminNavigation />
+
   <div v-if="errors.length">
     <b>The following error(s) occurred:</b>
     <ul>
@@ -30,12 +32,14 @@ import setBackgroundImage from '@/utils/setBackgroundImage'
 
 import axios from '@/utils/axios-client'
 
+import AdminNavigation from "@/components/AdminNavigation"
 import ParticipantsList from "@/components/ParticipantsList"
 
 import loading from '@/utils/loading'
 
 export default {
   components: {
+    AdminNavigation,
     ParticipantsList
   },
   data() {
