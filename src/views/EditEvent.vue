@@ -36,7 +36,7 @@
           </fieldset>
         </form>
 
-        <form id="add-participants" @submit="postParticipants" class="form-group form-box">
+        <form id="add-participants" @submit="showConfirmAddParticipantsModal" class="form-group form-box">
           <fieldset>
             <legend>Add Participants</legend>
             <p>
@@ -63,6 +63,21 @@
       </div>
     </div>
 
+    <div class="modal fade" id="confirmAddParticipantsModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmAddParticipantsModalLabel">Add participants</h5>
+          </div>
+          <div class="modal-body" id="confirmAddParticipantsModalBody">Adding participants will result in a mail being sent to each participants with instructions on how to join a group. Is your event ready for that?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click="postParticipants">Ok</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -77,6 +92,8 @@ import AdminNavigation from "@/components/AdminNavigation"
 import loading from '@/utils/loading'
 
 import {toLocaleDatetimeString, toISOWithOffsetString} from '@/utils/datetime'
+
+const $ = window.jQuery;
 
 export default {
   components: {
@@ -95,6 +112,18 @@ export default {
     }
   },
   methods: {
+    showConfirmAddParticipantsModal(e) {
+      e.preventDefault()
+
+      const fileElement = document.getElementById('file')
+      const file = fileElement.files[0]
+      if (file == null) {
+        this.errors.push("No input file!")
+        return
+      }
+
+      $('#confirmAddParticipantsModal').modal('show')
+    },
     postGroup(e) {
       e.preventDefault()
 
@@ -141,9 +170,7 @@ export default {
       }
 
     },
-    postParticipants(e) {
-      e.preventDefault()
-
+    postParticipants() {
       const fileElement = document.getElementById('file')
       const file = fileElement.files[0]
       if (file == null) {
@@ -162,11 +189,13 @@ export default {
           .post(url, data, config)
           .then(response => {
             loading.unload()
+            $('#confirmAddParticipantsModal').modal('hide');
             this.csvResponse = response.data
             this.errors = []
           })
           .catch(error => {
             loading.unload()
+            $('#confirmAddParticipantsModal').modal('hide');
             console.log(error)
             this.errors.push(error)
           })

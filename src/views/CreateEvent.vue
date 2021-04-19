@@ -48,7 +48,6 @@
       </div>
     </div>
 
-    <button style="visibility: hidden" id="show-modal" data-toggle="modal" data-target="#createEventModal"></button>
     <input type="hidden" id="token" v-model="token"/>
 
   </div>
@@ -62,8 +61,9 @@ import axios from '@/utils/axios-client'
 
 import loading from '@/utils/loading'
 
-import $ from 'jquery'
 import {toISOWithOffsetString} from '@/utils/datetime'
+
+const $ = window.jQuery;
 
 export default {
   data() {
@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     showModal() {
-      $('#show-modal').click()
+      $('#createEventModal').modal('show');
     },
     submit(e) {
       e.preventDefault()
@@ -147,6 +147,7 @@ export default {
   border-radius: 25px;
   background: white;
   width: 20%;
+  margin-top: 5%;
   margin-left: 5%;
   padding: 2% 2% 1%;
 }

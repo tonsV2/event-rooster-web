@@ -26,7 +26,7 @@
       <input type="submit" value="Submit" :disabled="!selectedGroup" class="btn btn-primary">
     </form>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="groupJoinedModal" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -36,8 +36,6 @@
         </div>
       </div>
     </div>
-
-    <button style="visibility: hidden" id="show-modal" data-toggle="modal" data-target="#exampleModal"></button>
 
   </div>
 </template>
@@ -50,8 +48,9 @@ import axios from '@/utils/axios-client'
 
 import loading from '@/utils/loading'
 
-import $ from 'jquery'
 import {toLocaleDatetimeString} from '@/utils/datetime'
+
+const $ = window.jQuery;
 
 export default {
   data() {
@@ -68,7 +67,7 @@ export default {
   },
   methods: {
     showModal() {
-      $('#show-modal').click()
+      $('#groupJoinedModal').modal('show')
     },
     isGroupFull(group) {
       return !(group.actualParticipants < group.maxParticipants)

@@ -67,6 +67,10 @@ describe('Edit event', () => {
         cy.get('#submit-participants').click()
     })
 
+    it('Confirm upload', () => {
+        cy.get('.btn.btn-primary').click()
+    })
+
     it('Has uploaded participants', () => {
         cy.get('#upload-response', { timeout: 10000 }).should('be.visible')
         cy.get('#upload-response').contains(/^3 participants parsed, found 3 new$/)
@@ -75,6 +79,10 @@ describe('Edit event', () => {
     it('Re-upload participants', () => {
         cy.get('input[type="file"]').attachFile('participants.csv')
         cy.get('#submit-participants').click()
+    })
+
+    it('Confirm upload', () => {
+        cy.get('.btn.btn-primary').click()
     })
 
     it('Has re-uploaded participants', () => {
