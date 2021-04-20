@@ -163,9 +163,9 @@ describe('Change group for grouped participant', () => {
         cy.get('input[type=submit]').click()
         cy.get('.modal-header', {timeout: 10000}).first().should('be.visible')
         cy.get('.modal-header', {timeout: 10000}).first().contains('Good choice!')
-        cy.get('.modal-body', {timeout: 10000}).first().contains('test@mail.com')
-        cy.get('body').first().type('{esc}')
-        cy.go('back')
+//        cy.get('.modal-body', {timeout: 10000}).first().contains('test@mail.com')
+//        cy.get('body').first().type('{esc}')
+//        cy.go('back')
     })
 
 })
